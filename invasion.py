@@ -1,10 +1,16 @@
 import sys, pygame
+from modules.settings import Settings
+from modules.ship import Ship
 
 def run_game():
     pygame.init()
-    screen = pygame.display.set_mode((1200, 800))
-    pygame.display.set_caption("Alien Invasion")
-    bg_color = (230, 230, 230)
+    game_settings = Settings()
+    screen = pygame.display.set_mode(
+            (game_settings.screen_width, game_settings.screen_height))
+    pygame.display.set_caption("Xenophobia!!")
+
+    # create player ship
+    ship = Ship(screen)
 
     # main loop
     while True:
@@ -14,7 +20,8 @@ def run_game():
                 sys.exit()
 
         #redraw screen on each pass through the loop
-        screen.fill(bg_color)
+        screen.fill(game_settings.bg_color)
+        ship.blitme()
 
         # make most recently drawn screen visible
         pygame.display.flip()
