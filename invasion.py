@@ -11,7 +11,7 @@ def run_game():
     pygame.display.set_caption("Xenophobia!!")
 
     # create player ship
-    ship = Ship(screen)
+    ship = Ship(game_settings, screen)
 
     # main loop
     while True:
