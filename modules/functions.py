@@ -32,6 +32,16 @@ def check_events(game_settings, screen, ship, bullets):
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
 
+def update_bullets(bullets):
+    """update position of bullets and get rid of old bullets"""
+    bullets.update()
+
+    # remove bullets that have passed offscreen
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0:
+            bullets.remove(bullet)
+    # print(len(bullets))
+
 def update_screen(game_settings, screen, ship, bullets):
     """update images on screen and flip to the new screen"""
     # redraw screen on each pass through the loop
