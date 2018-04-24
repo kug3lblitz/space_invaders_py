@@ -89,6 +89,10 @@ def create_fleet(game_settings, screen, ship, aliens):
         for alien_number in range(number_aliens_x):
             create_alien(game_settings, screen, aliens, alien_number, row_number)
 
+def update_aliens(aliens):
+    """update position of all aliens in the fleet"""
+    aliens.update()
+
 def update_screen(game_settings, screen, ship, aliens, bullets):
     """update images on screen and flip to the new screen"""
     # redraw screen on each pass through the loop

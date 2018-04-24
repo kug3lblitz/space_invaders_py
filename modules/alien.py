@@ -24,3 +24,8 @@ class Alien(Sprite):
     def blitme(self):
         """draw the alien at its current location"""
         self.screen.blit(self.image, self.rect)
+
+    def update(self):
+        """move alien to the right"""
+        self.x += self.game_settings.alien_speed_factor
+        self.rect.x = self.x
