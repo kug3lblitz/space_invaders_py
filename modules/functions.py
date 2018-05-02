@@ -28,7 +28,7 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(game_settings, screen, ship, bullets):
+def check_events(game_settings, screen, stats, play_button, ship, bullets):
     """respond to keypresses and mouse events"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -39,6 +39,15 @@ def check_events(game_settings, screen, ship, bullets):
 
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats, play_button, mouse_x, mouse_y)
+
+def check_play_button(stats, play_button, mouse_x, mouse_y):
+    """start new game when player clicks play button"""
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        stats.game_active = True
 
 def update_bullets(game_settings, screen, ship, aliens, bullets):
     """update position of bullets and get rid of old bullets"""
@@ -157,7 +166,7 @@ def update_aliens(game_settings, stats, screen, ship, aliens, bullets):
         # print("SHIP HIT! YOU DIED!")
         ship_hit(game_settings, stats, screen, ship, aliens, bullets)
 
-def update_screen(game_settings, screen, ship, aliens, bullets):
+def update_screen(game_settings, screen, stats, ship, aliens, bullets, play_button):
     """update images on screen and flip to the new screen"""
     # redraw screen on each pass through the loop
     screen.fill(game_settings.bg_color)
@@ -168,6 +177,10 @@ def update_screen(game_settings, screen, ship, aliens, bullets):
 
     ship.blitme()
     aliens.draw(screen)
+
+    # draw play button if the game is inactive
+    if not stats.game_active:
+        play_button.draw_button()
 
     # make the most recently drawn screen visible
     pygame.display.flip()
