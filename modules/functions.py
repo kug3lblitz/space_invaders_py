@@ -28,7 +28,7 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.moving_left = False
 
-def check_events(game_settings, screen, stats, play_button, ship, bullets):
+def check_events(game_settings, screen, stats, play_button, ship, aliens, bullets):
     """respond to keypresses and mouse events"""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -42,12 +42,30 @@ def check_events(game_settings, screen, stats, play_button, ship, bullets):
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(stats, play_button, mouse_x, mouse_y)
+            check_play_button(game_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
 
-def check_play_button(stats, play_button, mouse_x, mouse_y):
+def check_play_button(game_settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
     """start new game when player clicks play button"""
-    if play_button.rect.collidepoint(mouse_x, mouse_y):
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and not stats.game_active:
+        start_game(game_settings, screen, stats, play_button, ship, aliens, bullets, check_play_button)
+
+def start_game(game_settings, screen, stats, play_button, ship, aliens, bullets, check_play_button):
+        #hide the mouse cursor
+        pygame.mouse.set_visible(False)
+
+        # reset game stats
+        stats.reset_stats()
         stats.game_active = True
+
+        # empty aliens, bullets lists
+        aliens.empty()
+        bullets.empty()
+
+        # create new fleet, center ship
+        create_fleet(game_settings, screen, ship, aliens)
+        ship.center_ship()
+
 
 def update_bullets(game_settings, screen, ship, aliens, bullets):
     """update position of bullets and get rid of old bullets"""
@@ -143,6 +161,7 @@ def ship_hit(game_settings, stats, screen, ship, aliens, bullets):
 
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
 
 def check_aliens_bottom(game_settings, stats, screen, ship, aliens, bullets):
     """check if any alien has reached bottom of screen"""
