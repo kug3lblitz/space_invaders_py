@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import pygame
 from pygame.sprite import Group
 from modules.settings import Settings
